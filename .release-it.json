@@ -1,0 +1,36 @@
+{
+  "git": {
+    "tagName": "v${version}",
+    "commitMessage": "chore(release): v${version} \n\n${changelog}",
+    "requireCleanWorkingDir": "false"
+  },
+  "hooks": {
+    "before:init": [
+      "npm run build"
+    ],
+    "before:github:release": [
+      "npm pack"
+    ],
+    "after:version": [
+      "echo Changelog ready for v${version}"
+    ],
+    "after:release": [
+      "echo Successfully released ${name} v${version} to ${repo.repository}."
+    ]
+  },
+  "plugins": {
+    "@release-it/conventional-changelog": {
+      "infile": "CHANGELOG.md",
+      "strictSemVer": "true",
+      "preset": "angular"
+    },
+    "@release-it-plugins/workspaces": {
+      "publish": false,
+      "workspaces": ["packages/lib/*"]
+    }
+  },
+  "github": {
+    "release": "true",
+    "assets": ["./*.tgz", "CHANGELOG.md"]
+  }
+}
